@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Jaanu ♾️</title>
+    <!-- Premium Confetti Particle Library for Animations -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0d0814 0%, #1a0f2e 50%, #05030a 100%);
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --accent-purple: #9d4edd;
+            --accent-glow: #bd93f9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: #f8f9fa;
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .page.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 40px 30px;
+            border-radius: 24px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            transform: translateY(20px);
+            animation: cardEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes cardEntrance {
+            to { transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.4;
+            letter-spacing: -0.5px;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            position: relative;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-purple), #7b2cbf);
+            color: white;
+            box-shadow: 0 4px 15px rgba(157, 78, 221, 0.4);
+            flex: 1;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.96);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: #e0e0e0;
+            border: 1px solid rgba(255,255,255,0.1);
+            flex: 1;
+        }
+
+        .shake {
+            animation: shakeAnim 0.4s ease-in-out;
+        }
+        @keyframes shakeAnim {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+
+        .dynamic-island {
+            background: #000;
+            width: 150px;
+            height: 35px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.2);
+            animation: pulseIsland 2s infinite;
+        }
+        @keyframes pulseIsland {
+            0%, 100% { box-shadow: 0 0 15px rgba(157, 78, 221, 0.2); }
+            50% { box-shadow: 0 0 25px rgba(157, 78, 221, 0.5); }
+        }
+        .dynamic-island.expand {
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0;
+            background: #05030a;
+            color: transparent;
+        }
+
+        #runaway-no {
+            z-index: 10;
+        }
+
+        .masonry-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            max-height: 430px;
+            overflow-y: auto;
+            padding-right: 5px;
+            margin-bottom: 20px;
+        }
+        .masonry-item {
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
+        .masonry-item img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .scrapbook-container {
+            width: 100%;
+            max-height: 480px;
+            overflow-y: auto;
+            padding-right: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .scrapbook-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 12px;
+            text-align: left;
+        }
+        .scrapbook-card img {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+        .scrapbook-caption {
+            font-size: 0.95rem;
+            color: #e0e0e0;
+            line-height: 1.4;
+            padding: 0 4px;
+        }
+
+        .letter-box {
+            text-align: left;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #e2dcf0;
+            max-height: 350px;
+            overflow-y: auto;
+            margin-bottom: 25px;
+            padding-right: 10px;
+        }
+        .letter-box p {
+            margin-bottom: 15px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PAGE 1: Gatekeeper -->
+    <div id="page1" class="page active">
+        <div class="card" id="card1">
+            <h1>Want Kashu from me? 🤔</h1>
+            <div class="btn-container">
+                <button class="btn btn-primary" onclick="nextPage(2)">Yes</button>
+                <button class="btn btn-secondary" id="p1-no" onclick="triggerNoTrap()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: Soft Emotional Cut-In -->
+    <div id="page2" class="page">
+        <div class="card">
+            <h1 style="font-size: 2.8rem; margin-bottom: 10px;">😭</h1>
+            <h1>Mujhe bhii chahiyee</h1>
+            <button class="btn btn-primary" style="margin-top: 15px; width: 100%;" onclick="nextPage(3)">Aww, Next ➔</button>
+        </div>
+    </div>
+
+    <!-- PAGE 3: The iOS Suspense Blackout -->
+    <div id="page3" class="page">
+        <h1 style="margin-bottom: 40px; max-width: 320px; font-weight: 500;">I want to confess somethingg to youu... 💜</h1>
+        <div class="dynamic-island" id="island" onclick="triggerIslandExpansion()">Confess....</div>
+    </div>
+
+    <!-- PAGE 4: The Laptop Mouse Runaway Proposal -->
+    <div id="page4" class="page">
+        <div class="card" style="position: relative; min-height: 280px; display: flex; flex-direction: column; justify-content: center;">
+            <h1 style="margin-bottom: 40px;">Will you marry me? 💍</h1>
+            <div class="btn-container" style="min-height: 60px; position: relative;">
+                <button class="btn btn-primary" onclick="nextPage(5)" style="position: relative; z-index: 50;">YES!</button>
+                <button class="btn btn-secondary" id="runaway-no" onmouseover="runAway(this)" onclick="runAway(this)">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 5: The Victory Notification Portal -->
+    <div id="page5" class="page">
+        <div class="card" style="background: transparent; border: none; box-shadow: none;">
+            <h1 style="font-size: 3.5rem; margin-bottom: 10px;">🎉</h1>
+            <h1 style="margin-bottom: 30px; font-weight: 500;">ahh! i know From The Start</h1>
+            
+            <div class="card" onclick="nextPage(6)" style="cursor: pointer; padding: 18px 20px; text-align: left; display: flex; gap: 15px; align-items: center; background: rgba(15, 10, 25, 0.65); transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <div style="font-size: 1.6rem;">💬</div>
+                <div>
+                    <strong style="font-size: 0.8rem; color: var(--accent-glow); display: block; margin-bottom: 3px; letter-spacing: 1px;">Ayushh</strong>
+                    <p style="font-size: 0.95rem; color: #f8f9fa;">Wanna know my intentions with youu? 👀</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 6: The Layout Grid (Imgur Hosted Direct Links Fixed) -->
+    <div id="page6" class="page">
+        <div class="card" style="max-width: 450px; padding: 30px 25px;">
+            <h1 style="font-size: 1.4rem; margin-bottom: 20px; color: var(--accent-glow);">My Intentions With You... ✨</h1>
+            <div class="masonry-grid">
+                <div class="masonry-item"><img src=https://i.pinimg.com/736x/61/99/cf/6199cf3d8bff2a59bd2c6ee6704be54d.jpg alt="Wedding Vibe 1"></div>
+                <div class="masonry-item"><img src=https://i.pinimg.com/1200x/50/03/1b/50031bb0264bce7502b426a2cfc6fc89.jpg alt="Wedding Vibe 2"></div>
+                <div class="masonry-item"><img src=https://i.pinimg.com/1200x/d7/55/ca/d755ca3dbb4ced264a03056b301bbd56.jpg alt="Wedding Vibe 3"></div>
+                <div class="masonry-item"><img src=https://i.pinimg.com/736x/09/db/c1/09dbc1898792a49b4f9b75369dd7fd29.jpg alt="Wedding Vibe 4"></div>
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="nextPage(7)">View Complete Vision ➔</button>
+        </div>
+    </div>
+
+    <!-- PAGE 7: Grand Vow Button -->
+    <div id="page7" class="page">
+        <div class="card" style="padding: 45px 30px;">
+            <h1 style="font-weight: 500; font-size: 1.5rem; line-height: 1.6; margin-bottom: 35px;">
+                you know what... mujhe na meri jaanu ke sath yeh experience krnaa hai!! 🥹💜
+            </h1>
+            <button class="btn btn-primary" id="vow-btn" onclick="triggerHeartBlast()" style="background: linear-gradient(135deg, #7b2cbf, #9d4edd); box-shadow: 0 0 25px rgba(157, 78, 221, 0.7); padding: 16px 35px; width: 100%; font-size: 1.1rem; letter-spacing: 0.5px;">
+                karna Hai! ♾️
+            </button>
+        </div>
+    </div>
+
+    <!-- PAGE 8: The Ultimate 10-Memory Filmstrip Scrapbook -->
+<div id="page8" class="page">
+    <div class="card" style="max-width: 480px; padding: 25px 20px;">
+        <h1 style="font-size: 1.3rem; margin-bottom: 18px; color: var(--accent-glow); letter-spacing: 0.5px;">Our Beautiful Future Roadmap 🗺️</h1>
+        <div class="scrapbook-container">
+            
+            <!-- 1. The Dream Wedding -->
+            <div class="scrapbook-card">
+                <img src=https://i.pinimg.com/1200x/2f/b4/32/2fb432261226cf2c88de98e544167eee.jpg alt="Wedding Vows">
+                <p class="scrapbook-caption"><strong>The Dream Wedding:</strong> "waiting for it... 😭"</p>
+            </div>
+            
+            <!-- 2. Gathbandhan -->
+            <div class="scrapbook-card">
+                <img src=https://i.pinimg.com/1200x/7f/53/53/7f5353bb3f9ea3f79094a602d5cbe7e5.jpg alt="Holding Hands">
+                <p class="scrapbook-caption"><strong>Gathbandhan:</strong> "finally we made it... ♾️"</p>
+            </div>
+            
+            <!-- 3. Traveling -->
+            <div class="scrapbook-card">
+                <img src="https://i.pinimg.com/736x/15/3f/dc/153fdc8633b07d35205b1c1c37faded2.jpg" alt="Traveling">
+                <p class="scrapbook-caption"><strong>Traveling:</strong> "Exploring you with these diffrent places..✈️"</p>
+            </div>
+            
+            <!-- 4. Cooking -->
+            <div class="scrapbook-card">
+                <img src="https://i.pinimg.com/1200x/b5/92/c6/b592c6ba75382ac93111009f79190f33.jpg" alt="Cooking">
+                <p class="scrapbook-caption"><strong>Cooking:</strong> "khaana kam romance jyadaa....🍳"</p>
+            </div>
+            
+            <!-- 5. Shower -->
+            <div class="scrapbook-card">
+                <img src="https://i.pinimg.com/736x/ed/eb/e4/edebe470ceb6a333a45df7a15f4114e7.jpg" alt="Shower">
+                <p class="scrapbook-caption"><strong>Shower:</strong> "Warm, quiet moments just for me and my duduu...🍼"</p>
+            </div>
+            
+            <!-- 6. Cuddles -->
+            <div class="scrapbook-card">
+                <img src="https://i.pinimg.com/736x/5d/83/f0/5d83f03a10c579df2ec5bf6a89a76829.jpg" alt="Cuddles">
+                <p class="scrapbook-caption"><strong>Cuddles:</strong> "This is the place we belongs too...🧸"</p>
+            </div>
+            
+            <!-- 7. Kashu -->
+            <div class="scrapbook-card">
+                <img src="https://i.pinimg.com/736x/25/e2/e5/25e2e53d28fb5f23606219d8986714bc.jpg" alt="Kashu">
+                <p class="scrapbook-caption"><strong>Kashu:</strong> "Our little Princess , Dream come truee....👶🏼"</p>
+            </div>
+            
+            <!-- 8. Movie Night -->
+            <div class="scrapbook-card">
+                <img src="https://i.pinimg.com/736x/1b/ba/a4/1bbaa48cc7c5683ea67d82771a4ae015.jpg" alt="Movie Night">
+                <p class="scrapbook-caption"><strong>Movie Night:</strong> "just You and Me 💋"</p>
+            </div>
+            
+            <!-- 9. Dates -->
+            <div class="scrapbook-card">
+                <img src="https://i.pinimg.com/736x/e4/20/fa/e420fa0ea73682e3fc819c3de0f04565.jpg" alt="Dates">
+                <p class="scrapbook-caption"><strong>Dates:</strong> "Dedication For Kashuu.. 👀"</p>
+            </div>
+            
+        </div>
+        <button class="btn btn-primary" style="margin-top: 20px; width: 100%;" onclick="nextPage(9)">Lock Our Forever ➔</button>
+    </div>
+</div>
+
+    <!-- PAGE 8.5: The Heartfelt Letter -->
+    <div id="page9" class="page">
+        <div class="card" style="max-width: 460px; padding: 30px 25px; text-align: left; background: rgba(20, 10, 35, 0.65);">
+            <h1 style="font-size: 1.4rem; margin-bottom: 20px; color: var(--accent-glow); text-align: center; letter-spacing: 0.5px;">To My Forever... ✍️❤️</h1>
+            
+            <div style="font-size: 0.95rem; color: #e0e0e0; line-height: 1.7; overflow-y: auto; max-height: 350px; padding-right: 10px; border-radius: 5px;">
+                <p style="margin-bottom: 15px;">Thanks, yeh website checkout krne ke liyee...</p>
+                
+                <p style="margin-bottom: 15px;">And mujhee bs itnaa hi kehnaa hai ki me ne jo bhi kiyaa aaapke sath abhi tak emotionally, mentally, physically vo sab mene glat intenstions se nahi kiyaa and genuinly i want family withh you. I want kashuu cause i am deeply in lovee with youu...</p>
+                
+                <p style="margin-bottom: 15px;">But due to some nazar apne bich bhot saari missunderstanding hogyi hai aur mujhee aise lagta hai ki hame jaldi iss prr kaam krnaa chahiyee and apnee carrier pr dhyaan dena chahiyee.</p>
+                
+                <p style="margin-bottom: 15px;">Aur agar mujhee abhi bhi mere intentions ya mujhe le kr kuch batane ki zarurta pad rhi hai toh shyd yeh connection ko bhot jyada hi Nazar lag gyi aur jaldi hame iss prr action lena padgeaa.</p>
+                
+                <p style="margin-bottom: 15px; font-weight: bold; color: var(--accent-glow);">And remember one thingg..... i lovee youu so muchhh and i am sorry for everything. Waiting for your replyy my lovee..</p>
+                
+                <p style="margin-bottom: 15px;">If you want to do this with me and experience each and everything with me, then definitely reach out to me on this.</p>
+                
+                <p style="text-align: right; font-style: italic; margin-top: 25px; color: #ff758f; font-weight: bold; font-size: 1rem;">
+                    Waiting for your replyy kashu ki mamma.. 💋
+                </p>
+            </div>
+            
+            
+        </div>
+    </div>
+
+
+    <!-- 🧠 CENTRAL JAVASCRIPT SYSTEM ENGINE -->
+    <script>
+        function nextPage(pageNum) {
+            // Jo bhi page abhi active hai, use chhupao
+            const activePage = document.querySelector('.page.active');
+            if (activePage) activePage.classList.remove('active');
+            
+            // Naye page ko dhoond kar active karo
+            const nextPageEl = document.getElementById('page' + pageNum);
+            if (nextPageEl) {
+                nextPageEl.classList.add('active');
+                
+                // Agar aakhri letter page khula hai, toh automatic heart blast chalao
+                if(pageNum === 9) {
+                    startInfiniteHearts();
+                }
+            }
+        }
+
+        function triggerNoTrap() {
+            const noBtn = document.getElementById('p1-no');
+            const card = document.getElementById('card1');
+            card.classList.add('shake');
+            setTimeout(() => card.classList.remove('shake'), 400);
+            
+            noBtn.innerText = "Haath Mat Lagao! 😡";
+            noBtn.style.background = "#d90429";
+            noBtn.style.color = "white";
+            noBtn.disabled = true;
+            noBtn.style.opacity = "0.6";
+            noBtn.style.cursor = "not-allowed";
+        }
+
+        function triggerIslandExpansion() {
+            const island = document.getElementById('island');
+            island.classList.add('expand');
+            setTimeout(() => {
+                nextPage(4);
+                island.classList.remove('expand');
+            }, 600);
+        }
+
+        function runAway(element) {
+            const maxX = window.innerWidth - element.clientWidth - 40;
+            const maxY = window.innerHeight - element.clientHeight - 40;
+
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+
+            element.style.position = "fixed";
+            element.style.left = randomX + "px";
+            element.style.top = randomY + "px";
+        }
+
+        function triggerHeartBlast() {
+            var defaults = { spread: 360, ticks: 60, gravity: 0.1, decay: 0.94, startVelocity: 30, colors: ['#9d4edd', '#7b2cbf', '#c77dff', '#e0aaff'] };
+            confetti({ ...defaults, particleCount: 50, scalar: 1.4, shapes: ['heart'] });
+            confetti({ ...defaults, particleCount: 30, scalar: 0.8 });
+            
+            setTimeout(() => {
+                nextPage(8);
+            }, 1800);
+        }
+
+        function startInfiniteHearts() {
+            var duration = 10 * 1000; // 10 seconds tak chalta rahega
+            var end = Date.now() + duration;
+
+            (function frame() {
+              // Left aur Right corners se romantic purple aur pink hearts burst honge
+              confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#9d4edd', '#ff758f'] });
+              confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#9d4edd', '#ff758f'] });
+
+              if (Date.now() < end) {
+                requestAnimationFrame(frame);
+              }
+            }());
+        }
+    </script>
+</body>
+</html>
+        
